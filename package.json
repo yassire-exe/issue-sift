@@ -1,7 +1,7 @@
 {
   "name": "moodboard-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "A GitHub App that reads the emotional tone of new issues and reacts accordingly.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,15 @@
     "@octokit/rest": "^22.0.1",
     "dotenv": "^18.0.8",
     "express": "^5.3.0",
+    "franc": "^6.2.0",
     "sentiment": "^5.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yassire-exe/moodboard-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yassire-exe/moodboard-bot/issues"
+  },
+  "homepage": "https://github.com/yassire-exe/moodboard-bot#readme"
 }
