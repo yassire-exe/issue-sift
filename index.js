@@ -32,6 +32,18 @@ function detectEmotion(text) {
   return { emoji: '🤔', label: 'à clarifier', tone: 'neutral' };
 }
 
+// Creates a short summary from the issue body.
+function generateSummary(body) {
+  if (!body || body.trim() === '') {
+    return "_No description provided._";
+  }
+  let cleanText = body.replace(/[#*`>]/g, '').replace(/\n/g, ' ').trim();
+  if (cleanText.length > 150) {
+    cleanText = cleanText.substring(0, 150) + '...';
+  }
+  return `> **TL;DR:** ${cleanText}`;
+}
+
 // Builds the reply in English or French depending on the detected language.
 function buildReply(emotion, author, repoName, lang) {
   const replies = {
@@ -113,13 +125,11 @@ app.post('/webhook', async (req, res) => {
     let detectedLang = franc(text);
     const wordCount = text.trim().split(/\s+/).length;
 
-    // franc is unreliable on very short texts, so we fall back to English
-    // unless we spot obvious French words.
+    // Fallback for short texts
     if (wordCount < 10) {
       const frenchIndicators = ['le', 'la', 'les', 'de', 'et', 'un', 'une', 'des', 'ce', 'cette', 'est', 'sont', 'pour', 'comment', 'pourquoi', 'merci', 'bonjour'];
       const words = text.toLowerCase().split(/\W+/);
       const isLikelyFrench = frenchIndicators.some(w => words.includes(w));
-
       if (!isLikelyFrench) {
         detectedLang = 'eng';
       }
@@ -147,7 +157,7 @@ app.post('/webhook', async (req, res) => {
         repo,
         name: emotion.label,
         color: colors[emotion.label] || 'cccccc',
-        description: `Issues tagged as "${emotion.label}" by MoodBoard Bot`,
+        description: `Issues tagged as "${emotion.label}" by IssueSift`,
       });
     }
 
@@ -173,13 +183,17 @@ app.post('/webhook', async (req, res) => {
       }
     }
 
-    const reply = buildReply(emotion, issue.user.login, repo, detectedLang);
+    // Build the final IssueSift report
+    const summary = generateSummary(issue.body);
+    const baseReply = buildReply(emotion, issue.user.login, repo, detectedLang);
+    
+    const finalReply = `### 🤖 IssueSift Report\n\n${summary}\n\n---\n\n${baseReply}\n\n---\n*🤖 Handled automatically by [IssueSift](https://github.com/yassire-exe/issue-sift)*`;
 
     await octokit.rest.issues.createComment({
       owner,
       repo,
       issue_number: issue.number,
-      body: reply,
+      body: finalReply,
     });
 
     console.log(`Done: ${owner}/${repo}#${issue.number}`);
@@ -189,5 +203,5 @@ app.post('/webhook', async (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`MoodBoard Bot listening on port ${process.env.PORT || 3000}`);
+  console.log(`IssueSift listening on port ${process.env.PORT || 3000}`);
 });
