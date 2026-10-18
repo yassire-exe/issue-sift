@@ -1,44 +1,29 @@
-# MoodBoard Bot
+# IssueSift 🪄
 
-A GitHub App that reads the emotional tone of new issues and reacts accordingly.
+> **The intelligent issue triage for maintainers.** Stop drowning in issues. IssueSift automatically analyzes, labels, and routes new issues so you can focus on what matters.
 
-## What it does
+[![GitHub stars](https://img.shields.io/github/stars/yassire-exe/issue-sift?style=social)](https://github.com/yassire-exe/issue-sift)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yassire-exe/issue-sift/pulls)
 
-When a new issue is opened, the bot:
-1. Analyzes the title and body to detect the dominant emotion (urgent, frustrated, positive, negative, neutral)
-2. Adds a colored label matching the detected emotion
-3. Posts a tailored comment adapted to the tone
+## ✨ Why IssueSift?
 
-## Why
+Maintainers get flooded with issues. Some are urgent bug reports, some are frustrated rants, and some are just questions. Reading through all of them to figure out what's what takes hours.
 
-Maintainers get flooded with issues. Some are urgent, some are frustrated rants, some are just questions. MoodBoard Bot helps triage them instantly by tagging the mood and replying with empathy.
+IssueSift acts as your personal triage assistant. It reads the issue, summarizes it, detects the emotional tone and language, and applies the right label and assignment.
 
-## Setup
+## 🚀 Features
 
-1. Clone the repo
-2. Install dependencies: `npm install`
-3. Create a `.env` file with `APP_ID`, `WEBHOOK_SECRET`, `PRIVATE_KEY_PATH`, `PORT`
-4. Add your GitHub App private key as `private-key.pem`
-5. Run: `node index.js`
-6. Expose the server with ngrok: `ngrok http 3000`
-7. Set the webhook URL in your GitHub App settings
+- **📝 TL;DR Summary**: Automatically extracts the core problem of the issue so you don't have to read a 500-word essay.
+- **🌍 Language Detection**: Detects if the user is speaking English or French and replies in their language.
+- **🧠 Emotional Tone Analysis**: Detects if an issue is `urgent` 🚨, `frustrated` 💢, `positive` 😊, `negative` 😟, or needs `clarification` 🤔.
+- **👤 Smart Assignment**: Routes urgent issues directly to the repository owner.
+- **🏷️ Auto-Labeling**: Tags issues with beautiful, color-coded labels.
 
-## Permissions
+## 📦 Quick Start (Local Development)
 
-- Issues: Read & write
-- Metadata: Read-only
-
-## Events
-
-- Issues
-
-## Stack
-
-- Node.js
-- Express
-- Octokit
-- sentiment
-
-## Status
-
-Work in progress.
+1. Clone the repo and install dependencies:
+   ```bash
+   git clone https://github.com/yassire-exe/issue-sift.git
+   cd issue-sift
+   npm install
